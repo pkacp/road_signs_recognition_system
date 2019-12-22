@@ -6,9 +6,10 @@ import cv2
 import numpy as np
 
 IMAGESDIR = "/home/piotr/Obrazy"
-PICKLEDDIR = "pickled_datasets"
-CATEGORIES = ["20", "30", "40", "50", "70", "koniec pierwszenstwa", "masz_pierwszenstwo", "przejscie dla pieszych",
-              "stop"]
+PICKLEDIR = "../pickled_datasets"
+CATEGORIES = ["20", "30", "40", "50", "70", "ustap pierwszenstwa", "koniec pierwszenstwa", "masz_pierwszenstwo",
+              "przejscie dla pieszych",
+              "stop", "rondo", "zakaz zatrzymywania", "zakaz wjazdu", "zakaz ruchu"]
 IMG_WIDTH = 50
 IMG_HEIGHT = 50
 
@@ -41,9 +42,9 @@ def reshape_dataset(dataset):
 
 training_dataset = create_dataset()
 X, y = reshape_dataset(training_dataset)
-pickle_out = open(f"{PICKLEDDIR}/X.pickle", "wb")
+pickle_out = open(f"{PICKLEDIR}/X.pickle", "wb")
 pickle.dump(X, pickle_out)
 pickle_out.close()
-pickle_out = open(f"{PICKLEDDIR}/y.pickle", "wb")
+pickle_out = open(f"{PICKLEDIR}/y.pickle", "wb")
 pickle.dump(y, pickle_out)
 pickle_out.close()

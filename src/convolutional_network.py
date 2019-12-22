@@ -8,19 +8,19 @@ from tensorflow.keras.models import Sequential
 
 # print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
 
-NAME = f"road-signs-recognition-conv-net-64x2-{int(time.time())}"
+NAME = f"road-signs-recognition-conv-net-128x2x64x2-{int(time.time())}"
 
 tensorboard = TensorBoard(log_dir=f'logs/{NAME}')
 
-X = np.array(pickle.load(open("pickled_datasets/X.pickle", "rb")))
-y = np.array(pickle.load(open("pickled_datasets/y.pickle", "rb")))
+X = np.array(pickle.load(open("../pickled_datasets/X.pickle", "rb")))
+y = np.array(pickle.load(open("../pickled_datasets/y.pickle", "rb")))
 categories_number = len(np.unique(y))
 print(f"Number of categories: {categories_number}")
 
 X = X / 255.0
 
 model = Sequential()
-model.add(Conv2D(64, (3, 3), input_shape=X.shape[1:]))
+model.add(Conv2D(128, (8, 8), input_shape=X.shape[1:]))
 model.add(Activation("relu"))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
