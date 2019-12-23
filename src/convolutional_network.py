@@ -8,9 +8,11 @@ from tensorflow.keras.models import Sequential
 
 # print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
 
-NAME = f"road-signs-recognition-conv-net-128x2x64x2-{int(time.time())}"
+# tensorboard --logdir="logs"
 
-tensorboard = TensorBoard(log_dir=f'logs/{NAME}')
+NAME = f"road-signs-recognition-conv-net-128x64-{int(time.time())}"
+
+tensorboard = TensorBoard(log_dir=f'../logs/{NAME}')
 
 X = np.array(pickle.load(open("../pickled_datasets/X.pickle", "rb")))
 y = np.array(pickle.load(open("../pickled_datasets/y.pickle", "rb")))
@@ -39,3 +41,5 @@ model.compile(loss="sparse_categorical_crossentropy",
               metrics=["accuracy"])
 
 model.fit(X, y, batch_size=8, epochs=10, validation_split=0.1, callbacks=[tensorboard])
+
+model.save(f"../saved_models/{NAME}.model")
