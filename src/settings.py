@@ -1,0 +1,2 @@
+CATEGORIES = ["20", "30", "40", "50", "70", "ustap pierwszenstwa", "koniec pierwszenstwa", "masz_pierwszenstwo",
+              "przejscie dla pieszych", "stop", "rondo", "zakaz zatrzymywania", "zakaz wjazdu", "zakaz ruchu"]

@@ -1,15 +1,16 @@
 import os
 import pickle
 import random
+import time
+from settings import CATEGORIES
 
 import cv2
 import numpy as np
 
-IMAGESDIR = "/home/piotr/Obrazy"
+# IMAGESDIR = "/home/piotr/Obrazy" #pc
+IMAGESDIR = "/home/piokac/Dokumenty/!inzynierka/Obrazy"  # laptop
 PICKLEDIR = "../pickled_datasets"
-CATEGORIES = ["20", "30", "40", "50", "70", "ustap pierwszenstwa", "koniec pierwszenstwa", "masz_pierwszenstwo",
-              "przejscie dla pieszych",
-              "stop", "rondo", "zakaz zatrzymywania", "zakaz wjazdu", "zakaz ruchu"]
+
 IMG_WIDTH = 50
 IMG_HEIGHT = 50
 
@@ -25,7 +26,7 @@ def create_dataset():
                                                     (IMG_WIDTH, IMG_HEIGHT)), category_number])
             except Exception as e:
                 print(e)
-    random.shuffle(training_dataset)
+    # random.shuffle(training_dataset) # moved shuffling to augmenting
     return training_dataset
 
 
@@ -41,10 +42,13 @@ def reshape_dataset(dataset):
 
 
 training_dataset = create_dataset()
+print(training_dataset[0][0])
+cv2.imwrite('Test.jpg', training_dataset[0][0])
 X, y = reshape_dataset(training_dataset)
-pickle_out = open(f"{PICKLEDIR}/X.pickle", "wb")
+cv2.imwrite('TestX.jpg', X[0])
+pickle_out = open(f"{PICKLEDIR}/X_{int(time.time())}.pickle", "wb")
 pickle.dump(X, pickle_out)
 pickle_out.close()
-pickle_out = open(f"{PICKLEDIR}/y.pickle", "wb")
+pickle_out = open(f"{PICKLEDIR}/y_{int(time.time())}.pickle", "wb")
 pickle.dump(y, pickle_out)
 pickle_out.close()
