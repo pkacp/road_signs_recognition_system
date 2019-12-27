@@ -1,4 +1,5 @@
 import pickle
+import random
 import time
 
 import numpy as np
@@ -10,7 +11,7 @@ from tensorflow.keras.models import Sequential
 
 # tensorboard --logdir="logs"
 
-NAME = f"road-signs-recognition-conv-net-128x64-{int(time.time())}"
+NAME = f"road-signs-recognition-conv-net-64x64-{int(time.time())}"
 
 tensorboard = TensorBoard(log_dir=f'../logs/{NAME}')
 
@@ -21,8 +22,12 @@ print(f"Number of categories: {categories_number}")
 
 X = X / 255.0
 
+temp = list(zip(X, y))
+random.shuffle(temp)
+X, y = zip(*temp)
+
 model = Sequential()
-model.add(Conv2D(128, (8, 8), input_shape=X.shape[1:]))
+model.add(Conv2D(64, (3, 3), input_shape=X.shape[1:]))
 model.add(Activation("relu"))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
@@ -40,6 +45,6 @@ model.compile(loss="sparse_categorical_crossentropy",
               optimizer="adam",
               metrics=["accuracy"])
 
-model.fit(X, y, batch_size=8, epochs=10, validation_split=0.3, callbacks=[tensorboard])
+model.fit(X, y, batch_size=16, epochs=10, validation_split=0.3, callbacks=[tensorboard])
 
 model.save(f"../saved_models/{NAME}.model")
