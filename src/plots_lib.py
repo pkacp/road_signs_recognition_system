@@ -19,15 +19,8 @@ def image_mosaic(data, title):
     columns = 8
     rows = 8
     for i in range(1, columns * rows + 1):
-        # print(i - 1)
         img = data[i - 1]
-        # print(img)
-        # print(np.squeeze(img))
         fig.add_subplot(rows, columns, i)
         plt.axis('off')
         plt.imshow(np.squeeze(img), cmap='gray')
-    # plt.title(title)
     plt.savefig(f'{PLOTDIR}{title}.png')
-
-# image_mosaic(0,"AAAAA")
-# bar_chart(["aaa","vvv", "ccc"], [10,15,121], "asjdfoisadiofjo")

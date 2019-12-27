@@ -4,6 +4,7 @@ import time
 
 import numpy as np
 from tensorflow.keras.callbacks import TensorBoard
+from sklearn.utils import shuffle
 from tensorflow.keras.layers import Dense, Activation, Flatten, Conv2D, MaxPooling2D
 from tensorflow.keras.models import Sequential
 
@@ -22,9 +23,7 @@ print(f"Number of categories: {categories_number}")
 
 X = X / 255.0
 
-temp = list(zip(X, y))
-random.shuffle(temp)
-X, y = zip(*temp)
+X, y = shuffle(X, y)
 
 model = Sequential()
 model.add(Conv2D(64, (3, 3), input_shape=X.shape[1:]))
