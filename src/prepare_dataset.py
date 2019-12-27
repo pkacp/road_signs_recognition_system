@@ -1,14 +1,15 @@
 import os
 import pickle
-import random
-import time
-from settings import CATEGORIES
+from collections import Counter
 
 import cv2
 import numpy as np
 
-# IMAGESDIR = "/home/piotr/Obrazy" #pc
-IMAGESDIR = "/home/piokac/Dokumenty/!inzynierka/Obrazy"  # laptop
+from plots_lib import bar_chart
+from settings import CATEGORIES
+
+IMAGESDIR = "/home/piotr/Obrazy"  # pc
+# IMAGESDIR = "/home/piokac/Dokumenty/!inzynierka/Obrazy"  # laptop
 PICKLEDIR = "../pickled_datasets"
 
 IMG_WIDTH = 50
@@ -26,7 +27,7 @@ def create_dataset():
                                                     (IMG_WIDTH, IMG_HEIGHT)), category_number])
             except Exception as e:
                 print(e)
-    # random.shuffle(training_dataset) # moved shuffling to augmenting
+    # random.shuffle(training_dataset) # moved shuffling after augmenting
     return training_dataset
 
 
@@ -42,13 +43,25 @@ def reshape_dataset(dataset):
 
 
 training_dataset = create_dataset()
-print(training_dataset[0][0])
-cv2.imwrite('Test.jpg', training_dataset[0][0])
+# cv2.imwrite('Test.jpg', training_dataset[0][0])
 X, y = reshape_dataset(training_dataset)
-cv2.imwrite('TestX.jpg', X[0])
-pickle_out = open(f"{PICKLEDIR}/X_{int(time.time())}.pickle", "wb")
+# Draw chart for numbers of categories
+categories_counter = dict(Counter(y))
+print(categories_counter)
+bar_chart(categories_counter.values(), CATEGORIES, "Wykres ilości znaków w poszczególnych kategoriach")
+
+# cv2.imwrite('TestX.jpg', X[0])
+pickle_out = open(f"{PICKLEDIR}/X.pickle", "wb")
 pickle.dump(X, pickle_out)
 pickle_out.close()
-pickle_out = open(f"{PICKLEDIR}/y_{int(time.time())}.pickle", "wb")
+pickle_out = open(f"{PICKLEDIR}/y.pickle", "wb")
 pickle.dump(y, pickle_out)
 pickle_out.close()
+
+# Working synchronous shuffle
+# a = [["a", 2, 3, 4, 5], ["b", 2, 3, 4, 5], ["c", 2, 3, 4, 5]]
+# b = ["a", "b", "c"]
+# temp = list(zip(a, b))
+# random.shuffle(temp)
+# a, b = zip(*temp)
+# print(a, b)

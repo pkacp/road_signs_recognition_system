@@ -3,11 +3,6 @@ import time
 
 import numpy as np
 from tensorflow.keras.callbacks import TensorBoard
-from plots_lib import bar_chart
-from settings import CATEGORIES
-from collections import Counter
-from tensorflow.keras.layers import Dense, Activation, Flatten, Conv2D, MaxPooling2D
-from tensorflow.keras.models import Sequential
 
 # print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
 
@@ -21,10 +16,6 @@ X = np.array(pickle.load(open("../pickled_datasets/X.pickle", "rb")))
 y = np.array(pickle.load(open("../pickled_datasets/y.pickle", "rb")))
 categories_number = len(np.unique(y))
 print(f"Number of categories: {categories_number}")
-categories_counter = dict(Counter(y))
-print(categories_counter)
-bar_chart(categories_counter.values(), CATEGORIES, "Wykres ilości znaków w poszczególnych kategoriach")
-print("DONE")
 
 # X = X / 255.0
 #
