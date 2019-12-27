@@ -6,20 +6,13 @@ import cv2
 import numpy as np
 
 from plots_lib import bar_chart
-from settings import CATEGORIES
-
-IMAGESDIR = "/home/piotr/Obrazy"  # pc
-# IMAGESDIR = "/home/piokac/Dokumenty/!inzynierka/Obrazy"  # laptop
-PICKLEDIR = "../pickled_datasets"
-
-IMG_WIDTH = 50
-IMG_HEIGHT = 50
+from settings import *
 
 
 def create_dataset():
     training_dataset = []
     for category_name in CATEGORIES:
-        category_path = os.path.join(IMAGESDIR, category_name)
+        category_path = os.path.join(IMAGES_BASE_DIR, category_name)
         category_number = CATEGORIES.index(category_name)
         for img in os.listdir(category_path):
             try:
@@ -51,10 +44,10 @@ print(categories_counter)
 bar_chart(categories_counter.values(), CATEGORIES, "Wykres ilości znaków w poszczególnych kategoriach")
 
 # cv2.imwrite('TestX.jpg', X[0])
-pickle_out = open(f"{PICKLEDIR}/X.pickle", "wb")
+pickle_out = open(X_PICKLED, "wb")
 pickle.dump(X, pickle_out)
 pickle_out.close()
-pickle_out = open(f"{PICKLEDIR}/y.pickle", "wb")
+pickle_out = open(Y_PICKLED, "wb")
 pickle.dump(y, pickle_out)
 pickle_out.close()
 
