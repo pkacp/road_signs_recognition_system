@@ -12,18 +12,17 @@ from tensorflow.keras.models import Sequential
 
 # tensorboard --logdir="logs"
 
-NAME = f"road-signs-recognition-conv-net-64x64-{int(time.time())}"
-
-tensorboard = TensorBoard(log_dir=f'../logs/{NAME}')
-
 X = np.array(pickle.load(open("../pickled_datasets/X.pickle", "rb")))
 y = np.array(pickle.load(open("../pickled_datasets/y.pickle", "rb")))
 categories_number = len(np.unique(y))
 print(f"Number of categories: {categories_number}")
+print(f"Number of all training images: {len(y)}")
 
 X = X / 255.0
-
 X, y = shuffle(X, y)
+
+NAME = f"road-signs-recognition-conv-net-set-len-{len(y)}-64x64-{int(time.time())}"
+tensorboard = TensorBoard(log_dir=f'../logs/{NAME}')
 
 model = Sequential()
 model.add(Conv2D(64, (3, 3), input_shape=X.shape[1:]))
