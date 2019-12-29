@@ -35,16 +35,26 @@ def reshape_dataset(dataset):
     return X, y
 
 
+# Draw chart of sample images
+list_of_files = list()
+for (dirpath, dirnames, filenames) in os.walk(IMAGES_BASE_DIR):
+    list_of_files += [os.path.join(dirpath, file) for file in filenames]
+all_images = []
+for file in list_of_files:
+    all_images.append(cv2.resize(cv2.imread(file), (50, 50)))
+sample_images = random.sample(list(all_images), 256)
+image_mosaic(sample_images, "sample_images", 'rgb')
+
 training_dataset = create_dataset()
 X, y = reshape_dataset(training_dataset)
 
 # Draw chart for numbers of categories
 categories_counter = dict(Counter(y))
 print(categories_counter)
-bar_chart(categories_counter.values(), CATEGORIES, "Wykres ilości znaków w poszczególnych kategoriach")
+bar_chart(categories_counter.values(), CATEGORIES, "categories_to_quantity_chart")
 # Draw a chart with sample images
 sample_images = random.sample(list(X), 256)
-image_mosaic(sample_images, "Przykładowe obazy wczytane z dysku do pliku, po ujednoliceniu rozmarów 50x50 i kolorów BW")
+image_mosaic(sample_images, "sample_images_after_read_in_grayscale_and_resize", 'gray')
 
 pickle_out = open(X_PICKLED, "wb")
 pickle.dump(X, pickle_out)
