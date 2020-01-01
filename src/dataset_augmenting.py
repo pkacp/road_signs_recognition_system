@@ -94,7 +94,7 @@ def augment_each_category_to_size(desired_category_size, list_of_transformations
             continue
         single_image_transformations = round(desired_category_size / categories_counter[yi])
         for i in range(single_image_transformations):
-            num_transformations_to_apply = random.randint(1, int(len(list_of_transformations) / 2))
+            num_transformations_to_apply = random.randint(1, 3)
             chosen_transformations = random.sample(list_of_transformations, num_transformations_to_apply)
             transformed_image = None
             for transformation in chosen_transformations:
@@ -134,10 +134,10 @@ augment_each_category_to_size(DESIRED_CATEGORY_SIZE, img_transformations_list)
 
 # TODO make script from that for Augmenting left to right signs
 # list_of_files = list()
-# for (dirpath, dirnames, filenames) in os.walk("/home/piotr/Obrazy2/Nakaz w prawo za znakiem"):
+# for (dirpath, dirnames, filenames) in os.walk("/home/piotr/Obrazy2/Pierwszeństwo przejazdu"):
 #     list_of_files += [os.path.join(dirpath, file) for file in filenames]
 # all_images = []
 # i = 0
 # for file in list_of_files:
-#     cv2.imwrite(f'/home/piotr/Obrazy2/tmp_w_lewo/mirror_w_lewo_{i}.png', np.fliplr(cv2.imread(file)))
+#     cv2.imwrite(f'/home/piotr/Obrazy2/tmp1/mirror_pierwszenstwo_{i}.png', np.fliplr(cv2.imread(file)))
 #     i += 1
