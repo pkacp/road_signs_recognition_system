@@ -13,6 +13,9 @@ from tensorflow.keras.regularizers import l2
 
 # tensorboard --logdir="logs"
 
+X_test = np.array(pickle.load(open("../pickled_datasets/X_test.pickle", "rb")))
+y_test = np.array(pickle.load(open("../pickled_datasets/y_test.pickle", "rb")))
+
 X = np.array(pickle.load(open("../pickled_datasets/X.pickle", "rb")))
 y = np.array(pickle.load(open("../pickled_datasets/y.pickle", "rb")))
 categories_number = len(np.unique(y))
@@ -25,7 +28,7 @@ print(y)
 
 X = X / 255.0
 
-NAME = f"road_signs_recognition-conv-regularizer-l2-{'32(3,3)2x2-64(3,3)2x2-128(3,3)2x2'}-dense-{0}-set_len-{len(y)}-img_size-{'32x32'}-{int(time.time())}"
+NAME = f"road_signs_recognition-conv-additional_dense_layer-5epochs-{'32(3,3)2x2-64(3,3)2x2-128(3,3)2x2'}-dense-{0}-set_len-{len(y)}-img_size-{'32x32'}-{int(time.time())}"
 print(NAME)
 tensorboard = TensorBoard(log_dir=f'../logs/{NAME}')
 
@@ -43,17 +46,21 @@ model.add(Activation("relu"))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
 model.add(Flatten())
-# model.add(Dense(64))
-# model.add(Activation("relu"))
+model.add(Dense(64))
+model.add(Activation("relu"))
 
-model.add(Dense(categories_number, kernel_regularizer=l2(0.001)))
+model.add(Dense(categories_number))
 model.add(Activation("sigmoid"))
 
 model.compile(loss="sparse_categorical_crossentropy",
               optimizer="adam",
               metrics=["sparse_categorical_accuracy"])
 
-model.fit(X, y, batch_size=32, epochs=10, validation_split=0.3, callbacks=[tensorboard])
+model.fit(X, y, batch_size=64, epochs=5, validation_split=0.3, callbacks=[tensorboard])
+
+print('\n# Evaluate on test data')
+results = model.evaluate(X_test, y_test, batch_size=8)
+print('test loss, test acc:', results)
 
 model.save(f"../saved_models/{NAME}.model")
 

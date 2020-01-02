@@ -10,10 +10,10 @@ from plots_lib import bar_chart, image_mosaic
 from settings import *
 
 
-def create_dataset():
+def create_dataset(main_dir):
     training_dataset = []
     for category_name in CATEGORIES:
-        category_path = os.path.join(IMAGES_BASE_DIR, category_name)
+        category_path = os.path.join(main_dir, category_name)
         category_number = CATEGORIES.index(category_name)
         for img in os.listdir(category_path):
             try:
@@ -35,18 +35,30 @@ def reshape_dataset(dataset):
     return X, y
 
 
+def save_to_picle(X, X_dir, y, y_dir):
+    pickle_out = open(X_dir, "wb")
+    pickle.dump(X, pickle_out)
+    pickle_out.close()
+    pickle_out = open(y_dir, "wb")
+    pickle.dump(y, pickle_out)
+    pickle_out.close()
+
+
 # Draw chart of sample images
 list_of_files = list()
 for (dirpath, dirnames, filenames) in os.walk(IMAGES_BASE_DIR):
     list_of_files += [os.path.join(dirpath, file) for file in filenames]
 all_images = []
 for file in list_of_files:
-    all_images.append(cv2.resize(cv2.imread(file), (50, 50)))
+    all_images.append(cv2.imread(file))
 sample_images = random.sample(list(all_images), 256)
 image_mosaic(sample_images, "sample_images", 'rgb')
 
-training_dataset = create_dataset()
+training_dataset = create_dataset(IMAGES_BASE_DIR)
 X, y = reshape_dataset(training_dataset)
+
+test_dataset = create_dataset(IMAGES_TEST_DIR)
+X_test, y_test = reshape_dataset(test_dataset)
 
 # Draw chart for numbers of categories
 categories_counter = dict(Counter(y))
@@ -56,9 +68,5 @@ bar_chart(categories_counter.values(), CATEGORIES, "categories_to_quantity_chart
 sample_images = random.sample(list(X), 256)
 image_mosaic(sample_images, "sample_images_after_read_in_grayscale_and_resize", 'gray')
 
-pickle_out = open(X_PICKLED, "wb")
-pickle.dump(X, pickle_out)
-pickle_out.close()
-pickle_out = open(Y_PICKLED, "wb")
-pickle.dump(y, pickle_out)
-pickle_out.close()
+save_to_picle(X, X_PICKLED, y, Y_PICKLED)
+save_to_picle(X_test, X_TEST_PICKLED, y_test, Y_TEST_PICKLED)
