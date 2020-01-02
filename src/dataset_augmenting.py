@@ -59,16 +59,16 @@ img_transformations_list = [
 def augment_with_vertical_flip(possible_categories_to_flip):
     for i in possible_categories_to_flip:
         print(CATEGORIES[i])
-    X = np.array(pickle.load(open(X_PICKLED, "rb")))
-    y = np.array(pickle.load(open(Y_PICKLED, "rb")))
+    X = np.array(pickle.load(open(X_TRAIN_PICKLED, "rb")))
+    y = np.array(pickle.load(open(Y_TRAIN_PICKLED, "rb")))
     aug_y = []
     aug_X = []
     # TODO finish this flip
 
 
 def augment_each_category_to_size(desired_category_size, list_of_transformations):
-    X = np.array(pickle.load(open(X_PICKLED, "rb")))
-    y = np.array(pickle.load(open(Y_PICKLED, "rb")))
+    X = np.array(pickle.load(open(X_TRAIN_PICKLED, "rb")))
+    y = np.array(pickle.load(open(Y_TRAIN_PICKLED, "rb")))
 
     # Save sample transformations
     cv2.imwrite(f'{PLOTSDIR}test.jpg', X[0])
@@ -121,16 +121,16 @@ def augment_each_category_to_size(desired_category_size, list_of_transformations
     sample_images = random.sample(list(X), 256)
     image_mosaic(sample_images, "sample_images_after_augmenting", 'gray')
 
-    pickle_out = open(X_PICKLED, "wb")
+    pickle_out = open(X_TRAIN_PICKLED, "wb")
     pickle.dump(X, pickle_out)
     pickle_out.close()
-    pickle_out = open(Y_PICKLED, "wb")
+    pickle_out = open(Y_TRAIN_PICKLED, "wb")
     pickle.dump(y, pickle_out)
     pickle_out.close()
 
 
 # augment_with_vertical_flip(CAN_BE_AUGMENTED_WITH_VERT_FLIP_INDEXES)
-augment_each_category_to_size(DESIRED_CATEGORY_SIZE, img_transformations_list)
+augment_each_category_to_size(DESIRED_TRAINING_CATEGORY_SIZE, img_transformations_list)
 
 # TODO make script from that for Augmenting left to right signs
 # list_of_files = list()

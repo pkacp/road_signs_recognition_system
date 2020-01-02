@@ -46,7 +46,7 @@ def save_to_picle(X, X_dir, y, y_dir):
 
 # Draw chart of sample images
 list_of_files = list()
-for (dirpath, dirnames, filenames) in os.walk(IMAGES_BASE_DIR):
+for (dirpath, dirnames, filenames) in os.walk(IMAGES_TRAIN_DIR):
     list_of_files += [os.path.join(dirpath, file) for file in filenames]
 all_images = []
 for file in list_of_files:
@@ -54,8 +54,11 @@ for file in list_of_files:
 sample_images = random.sample(list(all_images), 256)
 image_mosaic(sample_images, "sample_images", 'rgb')
 
-training_dataset = create_dataset(IMAGES_BASE_DIR)
+training_dataset = create_dataset(IMAGES_TRAIN_DIR)
 X, y = reshape_dataset(training_dataset)
+
+validation_dataset = create_dataset(IMAGES_VAL_DIR)
+X_val, y_val = reshape_dataset(validation_dataset)
 
 test_dataset = create_dataset(IMAGES_TEST_DIR)
 X_test, y_test = reshape_dataset(test_dataset)
@@ -68,5 +71,6 @@ bar_chart(categories_counter.values(), CATEGORIES, "categories_to_quantity_chart
 sample_images = random.sample(list(X), 256)
 image_mosaic(sample_images, "sample_images_after_read_in_grayscale_and_resize", 'gray')
 
-save_to_picle(X, X_PICKLED, y, Y_PICKLED)
+save_to_picle(X, X_TRAIN_PICKLED, y, Y_TRAIN_PICKLED)
+save_to_picle(X_val, X_VAL_PICKLED, y_val, Y_VAL_PICKLED)
 save_to_picle(X_test, X_TEST_PICKLED, y_test, Y_TEST_PICKLED)

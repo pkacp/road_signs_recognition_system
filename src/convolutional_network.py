@@ -3,6 +3,7 @@ import random
 import time
 
 import numpy as np
+from settings import *
 from tensorflow.keras.callbacks import TensorBoard
 from sklearn.utils import shuffle
 from tensorflow.keras.layers import Dense, Activation, Flatten, Conv2D, MaxPooling2D
@@ -13,11 +14,11 @@ from tensorflow.keras.regularizers import l2
 
 # tensorboard --logdir="logs"
 
-X_test = np.array(pickle.load(open("../pickled_datasets/X_test.pickle", "rb")))
-y_test = np.array(pickle.load(open("../pickled_datasets/y_test.pickle", "rb")))
+X_test = np.array(pickle.load(open(X_TEST_PICKLED, "rb")))
+y_test = np.array(pickle.load(open(Y_TEST_PICKLED, "rb")))
 
-X = np.array(pickle.load(open("../pickled_datasets/X.pickle", "rb")))
-y = np.array(pickle.load(open("../pickled_datasets/y.pickle", "rb")))
+X = np.array(pickle.load(open(X_TRAIN_PICKLED, "rb")))
+y = np.array(pickle.load(open(Y_TRAIN_PICKLED, "rb")))
 categories_number = len(np.unique(y))
 print(f"Number of categories: {categories_number}")
 print(f"Number of all training images: {len(y)}")
