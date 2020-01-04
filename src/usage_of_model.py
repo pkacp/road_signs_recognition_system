@@ -13,7 +13,9 @@ def prepare_image(img_path):
 X_test = np.array(pickle.load(open("../pickled_datasets/X_test.pickle", "rb")))
 y_test = np.array(pickle.load(open("../pickled_datasets/y_test.pickle", "rb")))
 
-model_name = 'road_signs_recognition-conv-sparse_categorical_accuracy-32(3,3)2x2-64(3,3)2x2-128(3,3)2x2-dense-0-set_len-57037-img_size-32x32-1577920158.model'
+X_test = X_test / 255.0
+
+model_name = '1578089613-road_signs_recognition-conv-32(3,3)2x2-64(3,3)2x2-128(3,3)2x2-dense-64-epochs-30.model'
 model = tf.keras.models.load_model(f'../saved_models/{model_name}')
 
 # test_images_path = '../test_images/'

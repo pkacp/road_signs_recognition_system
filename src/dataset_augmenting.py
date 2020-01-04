@@ -17,7 +17,7 @@ def random_rotation(img):
 
 
 def random_noise(img):
-    noise = ia.augmenters.AdditiveGaussianNoise(scale=(10, 30))
+    noise = ia.augmenters.AdditiveGaussianNoise(scale=(5, 20))
     return noise.augment_image(img)
 
 
@@ -66,26 +66,21 @@ def augment_with_vertical_flip(possible_categories_to_flip):
     # TODO finish this flip
 
 
-def augment_each_category_to_size(desired_category_size, list_of_transformations):
-    X = np.array(pickle.load(open(X_TRAIN_PICKLED, "rb")))
-    y = np.array(pickle.load(open(Y_TRAIN_PICKLED, "rb")))
-
-    # Save sample transformations
-    cv2.imwrite(f'{PLOTSDIR}test.jpg', X[0])
-    cv2.imwrite(f'{PLOTSDIR}rotation.jpg', random_rotation(X[0]))
-    cv2.imwrite(f'{PLOTSDIR}noise.jpg', random_noise(X[0]))
-    cv2.imwrite(f'{PLOTSDIR}blur.jpg', random_blur(X[0]))
-    cv2.imwrite(f'{PLOTSDIR}motion_blur.jpg', random_motion_blur(X[0]))
-    cv2.imwrite(f'{PLOTSDIR}snow.jpg', random_snowflakes(X[0]))
-    cv2.imwrite(f'{PLOTSDIR}fog.jpg', random_fog(X[0]))
-    cv2.imwrite(f'{PLOTSDIR}salt.jpg', random_salt(X[0]))
+def augment_each_category_to_size(X, X_save_dir, y, y_save_dir, desired_category_size, list_of_transformations,
+                                  title_str):
+    if title_str == 'train':
+        # Save sample transformations
+        cv2.imwrite(f'{PLOTSDIR}test.jpg', X[0])
+        cv2.imwrite(f'{PLOTSDIR}rotation.jpg', random_rotation(X[0]))
+        cv2.imwrite(f'{PLOTSDIR}noise.jpg', random_noise(X[0]))
+        cv2.imwrite(f'{PLOTSDIR}blur.jpg', random_blur(X[0]))
+        cv2.imwrite(f'{PLOTSDIR}motion_blur.jpg', random_motion_blur(X[0]))
+        cv2.imwrite(f'{PLOTSDIR}snow.jpg', random_snowflakes(X[0]))
+        cv2.imwrite(f'{PLOTSDIR}fog.jpg', random_fog(X[0]))
+        cv2.imwrite(f'{PLOTSDIR}salt.jpg', random_salt(X[0]))
 
     categories_counter = dict(Counter(y))
-    print("Number of sample images in categories before augmenting:")
     print(categories_counter)
-    # if categories_counter[max(categories_counter)] > DESIRED_CATEGORY_SIZE:
-    #     print("One of categories is already above desired size, continue?")
-    #     os.system("PAUSE")
     aug_y = []
     aug_X = []
     aug_categories_counter = dict(Counter(y))
@@ -116,28 +111,37 @@ def augment_each_category_to_size(desired_category_size, list_of_transformations
     # Draw barchart with category sizes after augmenting
     categories_counter = dict(Counter(y))
     print(categories_counter)
-    bar_chart(categories_counter.values(), CATEGORIES, "categories_to_quantity_chart_after_augmenting")
+    bar_chart(categories_counter.values(), CATEGORIES, f"{title_str}_categories_to_quantity_chart_after_augmenting")
     # Draw a chart with sample images
     sample_images = random.sample(list(X), 256)
-    image_mosaic(sample_images, "sample_images_after_augmenting", 'gray')
+    image_mosaic(sample_images, f"{title_str}_sample_images_after_augmenting", 'gray')
 
-    pickle_out = open(X_TRAIN_PICKLED, "wb")
+    pickle_out = open(X_save_dir, "wb")
     pickle.dump(X, pickle_out)
     pickle_out.close()
-    pickle_out = open(Y_TRAIN_PICKLED, "wb")
+    pickle_out = open(y_save_dir, "wb")
     pickle.dump(y, pickle_out)
     pickle_out.close()
 
 
+X_train = np.array(pickle.load(open(X_TRAIN_PICKLED, "rb")))
+y_train = np.array(pickle.load(open(Y_TRAIN_PICKLED, "rb")))
+
+X_validate = np.array(pickle.load(open(X_VAL_PICKLED, "rb")))
+y_validate = np.array(pickle.load(open(Y_VAL_PICKLED, "rb")))
+
 # augment_with_vertical_flip(CAN_BE_AUGMENTED_WITH_VERT_FLIP_INDEXES)
-augment_each_category_to_size(DESIRED_TRAINING_CATEGORY_SIZE, img_transformations_list)
+augment_each_category_to_size(X_train, X_TRAIN_PICKLED, y_train, Y_TRAIN_PICKLED, DESIRED_TRAINING_CATEGORY_SIZE,
+                              img_transformations_list, 'train')
+augment_each_category_to_size(X_validate, X_VAL_PICKLED, y_validate, Y_VAL_PICKLED, DESIRED_VALIDATION_CATEGORY_SIZE,
+                              img_transformations_list, 'validation')
 
 # TODO make script from that for Augmenting left to right signs
 # list_of_files = list()
-# for (dirpath, dirnames, filenames) in os.walk("/home/piotr/Obrazy2/Pierwszeństwo przejazdu"):
+# for (dirpath, dirnames, filenames) in os.walk("/home/piotr/Obrazy2/train_images/Ustąp pierwszeństwa"):
 #     list_of_files += [os.path.join(dirpath, file) for file in filenames]
 # all_images = []
 # i = 0
 # for file in list_of_files:
-#     cv2.imwrite(f'/home/piotr/Obrazy2/tmp1/mirror_pierwszenstwo_{i}.png', np.fliplr(cv2.imread(file)))
+#     cv2.imwrite(f'/home/piotr/Obrazy2/tmp2/mirror_ustap_pierwszenstwo_{i}.png', np.fliplr(cv2.imread(file)))
 #     i += 1

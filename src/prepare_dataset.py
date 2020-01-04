@@ -6,7 +6,7 @@ from collections import Counter
 import cv2
 import numpy as np
 
-from plots_lib import bar_chart, image_mosaic
+from plots_lib import bar_chart, image_mosaic, double_bar_chart
 from settings import *
 
 
@@ -67,6 +67,9 @@ X_test, y_test = reshape_dataset(test_dataset)
 categories_counter = dict(Counter(y))
 print(categories_counter)
 bar_chart(categories_counter.values(), CATEGORIES, "categories_to_quantity_chart")
+val_categories_counter = dict(Counter(y_val))
+double_bar_chart(categories_counter.values(), 'Zbiór trenujący', val_categories_counter.values(), 'Zbiór walidacyjny',
+                 CATEGORIES, 'double_set_after_read')
 # Draw a chart with sample images
 sample_images = random.sample(list(X), 256)
 image_mosaic(sample_images, "sample_images_after_read_in_grayscale_and_resize", 'gray')
