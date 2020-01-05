@@ -138,10 +138,10 @@ augment_each_category_to_size(X_validate, X_VAL_PICKLED, y_validate, Y_VAL_PICKL
 
 # TODO make script from that for Augmenting left to right signs
 # list_of_files = list()
-# for (dirpath, dirnames, filenames) in os.walk("/home/piotr/Obrazy2/train_images/Ustąp pierwszeństwa"):
+# for (dirpath, dirnames, filenames) in os.walk("/home/piotr/Obrazy2/test_images/Nakaz jazdy po prawej stronie znaku"):
 #     list_of_files += [os.path.join(dirpath, file) for file in filenames]
 # all_images = []
 # i = 0
 # for file in list_of_files:
-#     cv2.imwrite(f'/home/piotr/Obrazy2/tmp2/mirror_ustap_pierwszenstwo_{i}.png', np.fliplr(cv2.imread(file)))
+#     cv2.imwrite(f'/home/piotr/Obrazy2/test_images/tmp1/mirror_nakaz_po_prawej_{i}.png', np.fliplr(cv2.imread(file)))
 #     i += 1
