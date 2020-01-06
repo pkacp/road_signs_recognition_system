@@ -3,7 +3,7 @@ import pickle
 import tensorflow as tf
 import numpy as np
 from settings import *
-from plots_lib import image_mosaic
+from plots_lib import image_chart_combo, image_mosaic
 
 
 def prepare_image(img_path):
@@ -20,7 +20,7 @@ y_test = np.array(pickle.load(open(Y_TEST_PICKLED, "rb")))
 X_val = X_val / 255.0
 X_test = X_test / 255.0
 
-model_name = '1578090785-road_signs_recognition-conv-32(3,3)2x2-64(3,3)2x2-128(3,3)2x2-dense-64-epochs-5.model'
+model_name = '1578187948-road_signs_recognition-conv-32(3,3)2x2-64(3,3)2x2-64(3,3)2x2-dense-64-epochs-10.model'
 model = tf.keras.models.load_model(f'../saved_models/{model_name}')
 
 # print(X_test[0].shape)
@@ -36,9 +36,11 @@ for prediction, image, fact in zip(predictions, X_test, y_test):
         np.set_printoptions(suppress=True)  # suppress scientific print
         print(np.max(prediction))
         print(f"Error in category {fact}")
-        wong_images.append(image)
+        # wong_images.append(image_chart_combo(prediction, fact, CATEGORIES, image))
+        # break
 
-image_mosaic(wong_images, 'wrong_predictions_images', 'gray')
+# image_mosaic(wong_images, 'wrong_predictions_images', 'gray')
+
 # prediction = model.predict([random_img])
 # print(prediction[0]
 # print(prediction)

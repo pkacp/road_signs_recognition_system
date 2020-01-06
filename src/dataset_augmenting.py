@@ -7,7 +7,7 @@ from collections import Counter
 import imgaug as ia  # https://github.com/aleju/imgaug
 import numpy as np
 
-from plots_lib import bar_chart, image_mosaic
+from plots_lib import *
 from settings import *
 
 
@@ -116,6 +116,7 @@ def augment_each_category_to_size(X, X_save_dir, y, y_save_dir, desired_category
     sample_images = random.sample(list(X), 256)
     image_mosaic(sample_images, f"{title_str}_sample_images_after_augmenting", 'gray')
 
+
     pickle_out = open(X_save_dir, "wb")
     pickle.dump(X, pickle_out)
     pickle_out.close()
@@ -131,10 +132,25 @@ X_validate = np.array(pickle.load(open(X_VAL_PICKLED, "rb")))
 y_validate = np.array(pickle.load(open(Y_VAL_PICKLED, "rb")))
 
 # augment_with_vertical_flip(CAN_BE_AUGMENTED_WITH_VERT_FLIP_INDEXES)
-augment_each_category_to_size(X_train, X_TRAIN_PICKLED, y_train, Y_TRAIN_PICKLED, DESIRED_TRAINING_CATEGORY_SIZE,
-                              img_transformations_list, 'train')
-augment_each_category_to_size(X_validate, X_VAL_PICKLED, y_validate, Y_VAL_PICKLED, DESIRED_VALIDATION_CATEGORY_SIZE,
-                              img_transformations_list, 'validation')
+# augment_each_category_to_size(X_train, X_TRAIN_PICKLED, y_train, Y_TRAIN_PICKLED, DESIRED_TRAINING_CATEGORY_SIZE,
+#                               img_transformations_list, 'train')
+# augment_each_category_to_size(X_validate, X_VAL_PICKLED, y_validate, Y_VAL_PICKLED, DESIRED_VALIDATION_CATEGORY_SIZE,
+#                               img_transformations_list, 'validation')
+
+X_train = np.array(pickle.load(open(X_TRAIN_PICKLED, "rb")))
+y_train = np.array(pickle.load(open(Y_TRAIN_PICKLED, "rb")))
+
+X_validate = np.array(pickle.load(open(X_VAL_PICKLED, "rb")))
+y_validate = np.array(pickle.load(open(Y_VAL_PICKLED, "rb")))
+
+# Draw chart with number of images in categories train and val
+categories_counter = dict(Counter(y_train))
+print(categories_counter)
+val_categories_counter = dict(Counter(y_validate))
+print(val_categories_counter)
+double_bar_chart(categories_counter.values(), 'Zbiór trenujący', val_categories_counter.values(),
+                 'Zbiór walidacyjny',
+                 CATEGORIES, 'double_set_after_augmenting')
 
 # TODO make script from that for Augmenting left to right signs
 # list_of_files = list()

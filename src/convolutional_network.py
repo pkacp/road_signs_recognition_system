@@ -39,30 +39,30 @@ X_train = X_train / 255.0
 X_val = X_val / 255.0
 X_test = X_test / 255.0
 
-# NAME = f"{int(time.time())}-road_signs_recognition-conv-{'32(3,3)2x2-64(3,3)2x2-128(3,3)2x2'}-dense-{'64'}-epochs-{10}"
-NAME = f"{int(time.time())}-road_signs_recognition-conv-{0}-dense-{'128x128'}-epochs-{10}"
+NAME = f"{int(time.time())}-road_signs_recognition-conv-{'32(3,3)2x2-64(3,3)2x2-64(3,3)2x2'}-dense-{'64'}-epochs-{10}"
+# NAME = f"{int(time.time())}-road_signs_recognition-conv-{0}-dense-{'128x128'}-epochs-{10}"
 print(NAME)
 tensorboard = TensorBoard(log_dir=f'../logs/{NAME}')
 
 model = Sequential()
-# model.add(Conv2D(32, (3, 3), input_shape=X_train.shape[1:]))
-# model.add(Activation("relu"))
-# model.add(MaxPooling2D(pool_size=(2, 2)))
-#
-# model.add(Conv2D(64, (3, 3)))
-# model.add(Activation("relu"))
-# model.add(MaxPooling2D(pool_size=(2, 2)))
-#
-# model.add(Conv2D(128, (3, 3)))
-# model.add(Activation("relu"))
-# model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Conv2D(32, (3, 3), input_shape=X_train.shape[1:]))
+model.add(Activation("relu"))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+
+model.add(Conv2D(64, (3, 3)))
+model.add(Activation("relu"))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+
+model.add(Conv2D(64, (3, 3)))
+model.add(Activation("relu"))
+model.add(MaxPooling2D(pool_size=(2, 2)))
 
 model.add(Flatten())
 
-model.add(Dense(128))
-model.add(Activation("relu"))
+# model.add(Dense(128))
+# model.add(Activation("relu"))
 
-model.add(Dense(128))
+model.add(Dense(64))
 model.add(Activation("relu"))
 
 model.add(Dense(categories_number))

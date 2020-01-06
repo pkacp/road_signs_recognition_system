@@ -1,3 +1,4 @@
 # Project exclude paths
 /venv/
 /archive_logs/
+/saved_models/

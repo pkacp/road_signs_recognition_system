@@ -67,6 +67,7 @@ X_test, y_test = reshape_dataset(test_dataset)
 categories_counter = dict(Counter(y))
 print(categories_counter)
 bar_chart(categories_counter.values(), CATEGORIES, "categories_to_quantity_chart")
+# Draw chart with number of images in categories train and val
 val_categories_counter = dict(Counter(y_val))
 double_bar_chart(categories_counter.values(), 'Zbiór trenujący', val_categories_counter.values(), 'Zbiór walidacyjny',
                  CATEGORIES, 'double_set_after_read')
