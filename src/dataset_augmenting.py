@@ -56,28 +56,28 @@ img_transformations_list = [
 
 
 # possible to make also horizontal augmenting flips for some sign types
-def augment_with_vertical_flip(possible_categories_to_flip):
-    for i in possible_categories_to_flip:
-        print(CATEGORIES[i])
-    X = np.array(pickle.load(open(X_TRAIN_PICKLED, "rb")))
-    y = np.array(pickle.load(open(Y_TRAIN_PICKLED, "rb")))
-    aug_y = []
-    aug_X = []
-    # TODO finish this flip
+# def augment_with_vertical_flip(possible_categories_to_flip):
+#     for i in possible_categories_to_flip:
+#         print(CATEGORIES[i])
+#     X = np.array(pickle.load(open(X_TRAIN_PICKLED, "rb")))
+#     y = np.array(pickle.load(open(Y_TRAIN_PICKLED, "rb")))
+#     aug_y = []
+#     aug_X = []
+#     # TODO finish this flip
 
 
 def augment_each_category_to_size(X, X_save_dir, y, y_save_dir, desired_category_size, list_of_transformations,
                                   title_str):
     if title_str == 'train':
         # Save sample transformations
-        cv2.imwrite(f'{PLOTSDIR}test.jpg', X[0])
-        cv2.imwrite(f'{PLOTSDIR}rotation.jpg', random_rotation(X[0]))
-        cv2.imwrite(f'{PLOTSDIR}noise.jpg', random_noise(X[0]))
-        cv2.imwrite(f'{PLOTSDIR}blur.jpg', random_blur(X[0]))
-        cv2.imwrite(f'{PLOTSDIR}motion_blur.jpg', random_motion_blur(X[0]))
-        cv2.imwrite(f'{PLOTSDIR}snow.jpg', random_snowflakes(X[0]))
-        cv2.imwrite(f'{PLOTSDIR}fog.jpg', random_fog(X[0]))
-        cv2.imwrite(f'{PLOTSDIR}salt.jpg', random_salt(X[0]))
+        cv2.imwrite(f'{PLOTDIR}/test.jpg', X[0])
+        cv2.imwrite(f'{PLOTDIR}/rotation.jpg', random_rotation(X[0]))
+        cv2.imwrite(f'{PLOTDIR}/noise.jpg', random_noise(X[0]))
+        cv2.imwrite(f'{PLOTDIR}/blur.jpg', random_blur(X[0]))
+        cv2.imwrite(f'{PLOTDIR}/motion_blur.jpg', random_motion_blur(X[0]))
+        cv2.imwrite(f'{PLOTDIR}/snow.jpg', random_snowflakes(X[0]))
+        cv2.imwrite(f'{PLOTDIR}/fog.jpg', random_fog(X[0]))
+        cv2.imwrite(f'{PLOTDIR}/salt.jpg', random_salt(X[0]))
 
     categories_counter = dict(Counter(y))
     print(categories_counter)
@@ -114,8 +114,7 @@ def augment_each_category_to_size(X, X_save_dir, y, y_save_dir, desired_category
     bar_chart(categories_counter.values(), CATEGORIES, f"{title_str}_categories_to_quantity_chart_after_augmenting")
     # Draw a chart with sample images
     sample_images = random.sample(list(X), 256)
-    image_mosaic(sample_images, f"{title_str}_sample_images_after_augmenting", 'gray')
-
+    image_mosaic(sample_images, f"{title_str}_sample_images_after_augmenting")
 
     pickle_out = open(X_save_dir, "wb")
     pickle.dump(X, pickle_out)
@@ -132,10 +131,11 @@ X_validate = np.array(pickle.load(open(X_VAL_PICKLED, "rb")))
 y_validate = np.array(pickle.load(open(Y_VAL_PICKLED, "rb")))
 
 # augment_with_vertical_flip(CAN_BE_AUGMENTED_WITH_VERT_FLIP_INDEXES)
-# augment_each_category_to_size(X_train, X_TRAIN_PICKLED, y_train, Y_TRAIN_PICKLED, DESIRED_TRAINING_CATEGORY_SIZE,
-#                               img_transformations_list, 'train')
-# augment_each_category_to_size(X_validate, X_VAL_PICKLED, y_validate, Y_VAL_PICKLED, DESIRED_VALIDATION_CATEGORY_SIZE,
-#                               img_transformations_list, 'validation')
+
+augment_each_category_to_size(X_train, X_TRAIN_PICKLED, y_train, Y_TRAIN_PICKLED, DESIRED_TRAINING_CATEGORY_SIZE,
+                              img_transformations_list, 'train')
+augment_each_category_to_size(X_validate, X_VAL_PICKLED, y_validate, Y_VAL_PICKLED, DESIRED_VALIDATION_CATEGORY_SIZE,
+                              img_transformations_list, 'validation')
 
 X_train = np.array(pickle.load(open(X_TRAIN_PICKLED, "rb")))
 y_train = np.array(pickle.load(open(Y_TRAIN_PICKLED, "rb")))

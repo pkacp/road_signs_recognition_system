@@ -3,7 +3,7 @@ import pickle
 import tensorflow as tf
 import numpy as np
 from settings import *
-from plots_lib import image_chart_combo, image_mosaic
+from plots_lib import *
 
 
 def prepare_image(img_path):
@@ -20,7 +20,7 @@ y_test = np.array(pickle.load(open(Y_TEST_PICKLED, "rb")))
 X_val = X_val / 255.0
 X_test = X_test / 255.0
 
-model_name = '1578187948-road_signs_recognition-conv-32(3,3)2x2-64(3,3)2x2-64(3,3)2x2-dense-64-epochs-10.model'
+model_name = '1578336606-road_signs_recognition-conv-32(3,3)2x2-64(3,3)2x2-64(3,3)2x2-dense-64-epochs-10.model'
 model = tf.keras.models.load_model(f'../saved_models/{model_name}')
 
 # print(X_test[0].shape)
@@ -30,15 +30,19 @@ model = tf.keras.models.load_model(f'../saved_models/{model_name}')
 wong_images = []
 
 # for image, category in zip(X_test, y_test):
+error_count = 0
 predictions = model.predict(X_test)
 for prediction, image, fact in zip(predictions, X_test, y_test):
     if np.argmax(prediction) != fact:
         np.set_printoptions(suppress=True)  # suppress scientific print
         print(np.max(prediction))
         print(f"Error in category {fact}")
+        error_count += 1
         # wong_images.append(image_chart_combo(prediction, fact, CATEGORIES, image))
         # break
 
+print("# Predict accuracy")
+print(100 - error_count / len(y_test) * 100)
 # image_mosaic(wong_images, 'wrong_predictions_images', 'gray')
 
 # prediction = model.predict([random_img])
@@ -46,6 +50,6 @@ for prediction, image, fact in zip(predictions, X_test, y_test):
 # print(prediction)
 
 print("-----------------------------------------------------------------------------")
-print('\n# Evaluate on test data')
+print('# Evaluate on test data')
 results = model.evaluate(X_test, y_test)
 print('test loss, test acc:', results)
