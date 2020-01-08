@@ -60,7 +60,7 @@ def image_mosaic(data, title):
 def plot_multi_val_accuracy(history_arr, labels_arr, acc_method, title):
     plt.clf()
     for history in history_arr:
-        plt.plot(map(lambda x: x * 100, history.history[f'val_{acc_method}']))
+        plt.plot([i * 100 for i in history.history[f'val_{acc_method}']])
     plt.ylabel('Dokładność [%]')
     plt.xlabel('Epoka uczenia')
     plt.legend(labels_arr, loc='upper left')
@@ -78,10 +78,11 @@ def plot_multi_val_loss(history_arr, labels_arr, title):
 
 
 def plot_accuracy_history(history, acc_method, title):
-    print("AAAAAAAAAAAAAAAAAAAAA")
+    train_acc = [i * 100 for i in history.history[acc_method]]
+    val_acc = [i * 100 for i in history.history[f'val_{acc_method}']]
     plt.clf()
-    plt.plot(map(lambda x: x * 100, history.history[acc_method]))
-    plt.plot(map(lambda x: x * 100, history.history[f'val_{acc_method}']))
+    plt.plot(train_acc)
+    plt.plot(val_acc)
     plt.ylabel('Dokładność [%]')
     plt.xlabel('Epoka uczenia')
     plt.legend(['Zbiór uczący', 'Zbiór walidacyjny'], loc='upper left')

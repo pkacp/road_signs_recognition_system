@@ -81,7 +81,7 @@ model.compile(loss=loss_function,
               metrics=[metric])
 
 history = model.fit(X_train, y_train, validation_data=(X_val, y_val),
-                    batch_size=32, epochs=5,
+                    batch_size=64, epochs=3,
                     # callbacks=[early_stopping]
                     )
 history_arr.append(history)
