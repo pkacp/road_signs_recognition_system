@@ -2,3 +2,5 @@
 /venv/
 /archive_logs/
 /saved_models/
+/plots/rgb/predictions/
+/plots/gray/predictions/
