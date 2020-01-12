@@ -28,9 +28,6 @@ error_count = 0
 prediction_nr = 0
 predictions = model.predict(X_test)
 
-# np.set_printoptions(suppress=True)  # suppress scientific print
-# print(predictions[179])
-
 error_number_list = [0] * len(CATEGORIES)
 all_correct_prediction_procent = [[] for i in range(len(CATEGORIES))]
 for prediction, fact in zip(predictions, y_test):
@@ -43,9 +40,7 @@ for prediction, fact in zip(predictions, y_test):
 
 mean_all_correct_prediction_procent = [0] * len(CATEGORIES)
 for idx, category_procent_predictions in enumerate(all_correct_prediction_procent):
-    print(idx, category_procent_predictions)
     mean_all_correct_prediction_procent[idx] = sum(category_procent_predictions) / len(category_procent_predictions)
-print(mean_all_correct_prediction_procent)
 bar_chart([i * 100 for i in mean_all_correct_prediction_procent], CATEGORIES, 'mean_percent_of_correct_predictions_in_categories')
 
 error_prc_list = []
@@ -68,7 +63,6 @@ for prediction, image, fact in zip(predictions, X_test, y_test):
 
 print("# Predict accuracy")
 print(100 - error_count / len(y_test) * 100)
-# image_mosaic(wong_images, 'wrong_predictions_images', 'gray')
 
 print("-----------------------------------------------------------------------------")
 print('# Evaluate on test data')

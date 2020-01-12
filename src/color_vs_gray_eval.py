@@ -47,7 +47,6 @@ for prediction, fact in zip(predictions_rgb, y_test_rgb):
 
 mean_all_correct_prediction_procent_rgb = [0] * len(CATEGORIES)
 for idx, category_procent_predictions in enumerate(all_correct_prediction_procent_rgb):
-    print(idx, category_procent_predictions)
     mean_all_correct_prediction_procent_rgb[idx] = sum(category_procent_predictions) / len(category_procent_predictions)
 
 error_prc_list_rgb = []
@@ -60,9 +59,6 @@ all_correct_prediction_procent_bw = [[] for i in range(len(CATEGORIES))]
 for prediction, fact in zip(predictions_bw, y_test_bw):
     id_max_prediction_confidence = np.argmax(prediction)
     max_prediction_confidence = np.max(prediction)
-    # print("AAAAAAAAAAAAAAA")
-    # print(id_max_prediction_confidence)
-    # print(fact)
     if id_max_prediction_confidence != fact:
         error_number_list_bw[fact] += 1
     elif id_max_prediction_confidence == fact:
@@ -70,7 +66,6 @@ for prediction, fact in zip(predictions_bw, y_test_bw):
 
 mean_all_correct_prediction_procent_bw = [0] * len(CATEGORIES)
 for idx, category_procent_predictions in enumerate(all_correct_prediction_procent_bw):
-    print(idx, category_procent_predictions)
     mean_all_correct_prediction_procent_bw[idx] = sum(category_procent_predictions) / len(category_procent_predictions)
 
 error_prc_list_bw = []
@@ -86,7 +81,3 @@ double_bar_chart([i * 100 for i in mean_all_correct_prediction_procent_rgb],
 double_bar_chart(error_prc_list_rgb, "Procent błędnych rozpoznań sieci operującej na zbiorze zdjęć kolorowych",
                  error_number_list_bw, "Procent błędnych rozpoznań sieci operującej na zbiorze zdjęć w skali szarości",
                  CATEGORIES, 'error_percent_prediction_rgb_vs_bw')
-# bar_chart([i * 100 for i in mean_all_correct_prediction_procent_rgb], CATEGORIES,
-#           'mean_percent_of_correct_predictions_in_categories')
-# bar_chart(error_number_list_rgb, CATEGORIES, 'number_of_errors_in_categories')
-# bar_chart(error_prc_list_rgb, CATEGORIES, 'percent_of_errors_in_categories')
