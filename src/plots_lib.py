@@ -4,17 +4,18 @@ from matplotlib import pyplot as plt
 from settings import PLOTDIR, COLOR_MODE
 
 
-def bar_chart(data, labels, title):
+def bar_chart(data, labels, title, xlabel=None, ylabel=None):
     plt.figure(figsize=(10, 8))
     plt.bar(labels, data, align='center')
-    # plt.ylabel('Ilość')
+    plt.ylabel(ylabel)
+    plt.xlabel(xlabel)
     plt.xticks(rotation=90)
     # plt.title(title)
     plt.subplots_adjust(bottom=0.4)
     plt.savefig(f'{PLOTDIR}/{title}.png', bbox_inches='tight')
 
 
-def double_bar_chart(data1, data1_label, data2, data2_label, labels, title):
+def double_bar_chart(data1, data1_label, data2, data2_label, labels, title, xlabel=None, ylabel=None):
     x = np.arange(len(labels))
     width = 0.4
     fig = plt.figure(figsize=(10, 8))
@@ -27,6 +28,8 @@ def double_bar_chart(data1, data1_label, data2, data2_label, labels, title):
     ax.legend()
     fig.tight_layout()
     plt.xticks(rotation=90)
+    plt.ylabel(ylabel)
+    plt.xlabel(xlabel)
     plt.subplots_adjust(bottom=0.4)
     plt.savefig(f'{PLOTDIR}/{title}.png', bbox_inches='tight')
     fig.clear()
@@ -61,7 +64,7 @@ def plot_multi_val_accuracy(history_arr, labels_arr, acc_method, title):
     plt.clf()
     for history in history_arr:
         plt.plot([i * 100 for i in history.history[f'val_{acc_method}']])
-    plt.ylabel('Dokładność [%]')
+    plt.ylabel('Dokładność (%)')
     plt.xlabel('Epoka uczenia')
     plt.legend(labels_arr, loc='upper left')
     plt.savefig(f'{PLOTDIR}/{title}.png', bbox_inches='tight')
@@ -71,7 +74,7 @@ def plot_multi_val_loss(history_arr, labels_arr, title):
     plt.clf()
     for history in history_arr:
         plt.plot(history.history['val_loss'])
-    plt.ylabel('Błąd')
+    plt.ylabel('Strata')
     plt.xlabel('Epoka uczenia')
     plt.legend(labels_arr, loc='upper left')
     plt.savefig(f'{PLOTDIR}/{title}.png', bbox_inches='tight')
@@ -83,7 +86,7 @@ def plot_accuracy_history(history, acc_method, title):
     plt.clf()
     plt.plot(train_acc)
     plt.plot(val_acc)
-    plt.ylabel('Dokładność [%]')
+    plt.ylabel('Dokładność (%)')
     plt.xlabel('Epoka uczenia')
     plt.legend(['Zbiór uczący', 'Zbiór walidacyjny'], loc='upper left')
     plt.savefig(f'{PLOTDIR}/{title}.png', bbox_inches='tight')
@@ -93,7 +96,7 @@ def plot_loss_history(history, loss_method, title):
     plt.clf()
     plt.plot(history.history['loss'])
     plt.plot(history.history['val_loss'])
-    plt.ylabel('Błąd')
+    plt.ylabel('Strata')
     plt.xlabel('Epoka uczenia')
     plt.legend(['Zbiór uczący', 'Zbiór walidacyjny'], loc='upper left')
     plt.savefig(f'{PLOTDIR}/{title}.png', bbox_inches='tight')
@@ -120,7 +123,7 @@ def plot_image(predictions_array, true_label, categories_array, img, title):
 
     plt.xlabel(
         f"Predykcja: {categories_array[predicted_label]}\n"
-        f"Prawdopodobieństwo predykcji: {round(100 * np.max(predictions_array), 2)}% \n"
+        f"Prawdopodobieństwo predykcji: {round(np.max(predictions_array), 2)}% \n"
         f"Właściwa kategoria: {categories_array[true_label]}",
         color=color)
 
@@ -128,15 +131,13 @@ def plot_image(predictions_array, true_label, categories_array, img, title):
 
 
 def plot_value_array(predictions_array, true_label, categories_array):
-    # predictions_array, true_label = predictions_array, true_label[i]
     categories_count = len(categories_array)
-    # print(categories_array)
-    plt.ylabel("Prawdopodobieństwo (%)")
+    plt.ylabel("Prawdopodobieństwo predykcji w kategorii (%)")
+    plt.xlabel("Numer kategorii")
     plt.grid(False)
     plt.xticks(range(categories_count))
-    plt.yticks([])
     thisplot = plt.bar(range(categories_count), predictions_array, color="#777777")
-    plt.ylim([0, 1])
+    plt.ylim([0, 100])
     predicted_label = np.argmax(predictions_array)
 
     thisplot[predicted_label].set_color('red')

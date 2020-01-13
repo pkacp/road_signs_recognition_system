@@ -150,7 +150,7 @@ val_categories_counter = dict(Counter(y_validate))
 print(val_categories_counter)
 double_bar_chart(categories_counter.values(), 'Zbiór trenujący', val_categories_counter.values(),
                  'Zbiór walidacyjny',
-                 CATEGORIES, 'double_set_after_augmenting')
+                 CATEGORIES, 'double_set_after_augmenting', 'Kategoria znaku', 'Liczba przykładów w kategorii')
 
 # TODO make script from that for Augmenting left to right signs
 # list_of_files = list()

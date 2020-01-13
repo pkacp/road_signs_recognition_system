@@ -20,8 +20,11 @@ y_test = np.array(pickle.load(open(Y_TEST_PICKLED, "rb")))
 X_val = X_val / 255.0
 X_test = X_test / 255.0
 
-model_name = '1578714434-rgb-road_signs_recognition-conv-32x32x64x128-sigmoid.model'
-# model_name = '1578721238-gray-road_signs_recognition-conv-32x32x64x128-sigmoid.model'
+if COLOR_MODE == 'rgb':
+    model_name = '1578714434-rgb-road_signs_recognition-conv-32x32x64x128-sigmoid.model'
+elif COLOR_MODE == 'gray':
+    model_name = '1578721238-gray-road_signs_recognition-conv-32x32x64x128-sigmoid.model'
+
 model = tf.keras.models.load_model(f'../saved_models/{model_name}')
 
 error_count = 0
@@ -41,25 +44,25 @@ for prediction, fact in zip(predictions, y_test):
 mean_all_correct_prediction_procent = [0] * len(CATEGORIES)
 for idx, category_procent_predictions in enumerate(all_correct_prediction_procent):
     mean_all_correct_prediction_procent[idx] = sum(category_procent_predictions) / len(category_procent_predictions)
-bar_chart([i * 100 for i in mean_all_correct_prediction_procent], CATEGORIES, 'mean_percent_of_correct_predictions_in_categories')
+bar_chart([i * 100 for i in mean_all_correct_prediction_procent], CATEGORIES, 'mean_percent_of_correct_predictions_in_categories', 'Kategoria znaku', 'Średni procent pewności poprawnych predykcji w kategorii')
 
 error_prc_list = []
 for error_number in error_number_list:
     error_prc_list.append(error_number * 64 / 100)
 
-bar_chart(error_number_list, CATEGORIES, 'number_of_errors_in_categories')
-bar_chart(error_prc_list, CATEGORIES, 'percent_of_errors_in_categories')
+bar_chart(error_number_list, CATEGORIES, 'number_of_errors_in_categories', 'Kategoria znaku', 'Liczba błędów w kategorii')
+bar_chart(error_prc_list, CATEGORIES, 'percent_of_errors_in_categories', 'Kategoria znaku', 'Procent błędnych rozpoznań w kategorii')
 
-for prediction, image, fact in zip(predictions, X_test, y_test):
-    if np.argmax(prediction) == fact:
-        image_chart_combo(prediction, fact, CATEGORIES, image, f'prediction_{prediction_nr}')
-    elif np.argmax(prediction) != fact:
-        np.set_printoptions(suppress=True)  # suppress scientific print
-        print(np.max(prediction))
-        print(f"Error in category {fact}")
-        error_count += 1
-        image_chart_combo(prediction, fact, CATEGORIES, image, f'error_{prediction_nr}')
-    prediction_nr += 1
+# for prediction, image, fact in zip(predictions, X_test, y_test):
+#     if np.argmax(prediction) == fact:
+#         image_chart_combo([i * 100 for i in prediction], fact, CATEGORIES, image, f'prediction_{prediction_nr}')
+#     elif np.argmax(prediction) != fact:
+#         np.set_printoptions(suppress=True)  # suppress scientific print
+#         # print(np.max(prediction))
+#         # print(f"Error in category {fact}")
+#         error_count += 1
+#         image_chart_combo([i * 100 for i in prediction], fact, CATEGORIES, image, f'error_{prediction_nr}')
+#     prediction_nr += 1
 
 print("# Predict accuracy")
 print(100 - error_count / len(y_test) * 100)

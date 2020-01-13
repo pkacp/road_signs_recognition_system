@@ -103,7 +103,7 @@ categories_counter = dict(Counter(y))
 val_categories_counter = dict(Counter(y_val))
 double_bar_chart(categories_counter.values(), 'Zbiór trenujący', val_categories_counter.values(),
                  'Zbiór walidacyjny',
-                 CATEGORIES, 'double_set_after_read')
+                 CATEGORIES, 'double_set_after_read', 'Kategoria znaku', 'Liczba przykładów w kategorii')
 
 save_to_picle(X, X_TRAIN_PICKLED, y, Y_TRAIN_PICKLED)
 save_to_picle(X_val, X_VAL_PICKLED, y_val, Y_VAL_PICKLED)
